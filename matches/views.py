@@ -6,8 +6,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import itertools
 import datetime
-
-
+import random
+venue_lists = ["GMC Stadium", "Tilak Maidan", 'Fatorda', 'Javahar', 'Mohali']
 
 class IndexView(TemplateView):
     template_name = "matches/index.html"
@@ -28,7 +28,6 @@ class IndexView(TemplateView):
         team_form = TeamForm(data=request.POST)
         if team_form.is_valid():
             team = team_form.save()
-        print(team_form)
         return redirect('index')
 
 
@@ -57,7 +56,8 @@ def team_linup(sender, instance, **kwargs):
         start_date = datetime.datetime(2020, 11, 10, 19, 0)
         for key in schedule_dict:
             for items in schedule_dict[key]:
-                match_list += [MatchList(team_1_id=items[0], team_2_id=items[1], start_time=start_date, end_time= start_date + datetime.timedelta(0, 5400))]
+                match_list += [MatchList(team_1_id=items[0], team_2_id=items[1], start_time=start_date,
+                                         end_time= start_date + datetime.timedelta(0, 5400), venue=random.choice(venue_lists))]
                 start_date += datetime.timedelta(hours=24)
         MatchList.objects.bulk_create(match_list)
 

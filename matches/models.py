@@ -18,6 +18,7 @@ class MatchList(models.Model):
     start_time = models.DateTimeField(blank=True)
     end_time = models.DateTimeField(blank=True)
     is_completed = models.BooleanField(default=False)
+    venue = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return '%s ---- %s' % (self.team_1, self.team_2)
